@@ -1,0 +1,74 @@
+= Introduction
+MP4Info supports the reading of tags and file info from MP4 audio files.
+It is based on the Perl module MP4::Info (http://search.cpan.org/~jhar/MP4-Info/)
+Note: MP4Info does not currently support Unicode strings.
+
+= License
+This program is free software; you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+= Usage
+
+With mp4info.rb in your load path, do:
+
+  require 'mp4info'
+
+Once the library is loaded, an MP4Info object is created by sending an IO
+object to MP4Info#new. MP4Info also provides the MP4Info#open method, which
+takes String containing a filename.
+
+  file = "my_favorite_song.mp4"
+  info = MP4Info.open(file)
+
+  io_stream = File.new("that_other_song.m4a")
+  other_info = MP4Info.new(io_stream)
+
+Once an MP4Info object is succesfully created, a number of tags are
+avalible:
+
+  * ALB   - Album
+  * APID  - Apple Store ID
+  * ART   - Artist
+  * CMT   - Comment
+  * COVR  - Album art (typically jpeg data)
+  * CPIL  - Compilation (boolean)
+  * CPRT  - Copyright statement
+  * DAY   - Year
+  * DISK  - Disk number & total (Array of two integers)
+  * GNRE  - Genre
+  * GRP   - Grouping
+  * NAM   - Title
+  * RTNG  - Rating (integer)
+  * TMPO  - Tempo (integer)
+  * TOO   - Encoder
+  * TRKN  - Track number & total (Array of two integers)
+  * WRT   - Author or composer
+
+The following extra information about the audio file is also provided:
+
+  * VERSION   - MPEG version (=4)
+  * LAYER     - Doesn't really mean antyhing, but here in case we need it
+                for compatibility with an MP3 library...
+  * BITRATE   - Bitrate in kbps (average for VBR files)
+                The formula used to generate this seems a little suspect.
+  * FREQUENCY - Frequency in kHz
+  * SIZE      - Bytes in audio stream
+  
+  * SECS  - Total seconds, rounded to nearest second
+  * MM    - Minutes
+  * SS    - Leftover seconds
+  * MS    - Leftover milliseconds, rounded to nearest millisecond
+  * TIME  - Time in MM:SS, rounded to nearest second
+
+  * COPYRIGHT	- Non-nil if audio is copyrighted
+  * ENCRYPTED	- Non-nil if audio data is encrypted

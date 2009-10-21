@@ -1,0 +1,15 @@
+Index: mp4info.rb
+===================================================================
+--- mp4info.rb	(revision 41)
++++ mp4info.rb	(working copy)
+@@ -185,6 +185,10 @@
+       data = read_or_raise(io_stream, size, "Premature end of file")
+       
+       cache = Tempfile.new "mp4info"
++      
++      # required for Windows
++      cache.binmode
++      
+       cache.write data
+       cache.open
+       cache.rewind
