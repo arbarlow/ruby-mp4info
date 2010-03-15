@@ -1,3 +1,12 @@
+= My Changes
+This gem isn't originally mine, but i've added things etc...
+
+= Bundler
+The gem can now be used with bundler and by extension, Rails 3, just use...
+
+	gem "mp4info", :git => "git://github.com/arbarlow/ruby-mp4info.git", :require => "mp4info"
+
+
 = Introduction
 MP4Info supports the reading of tags and file info from MP4 audio files.
 It is based on the Perl module MP4::Info (http://search.cpan.org/~jhar/MP4-Info/)
