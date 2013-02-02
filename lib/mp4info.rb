@@ -155,9 +155,12 @@ class MP4Info
         raise "Parse error"
       end
       
-      if id.bytes.to_a[0] == 169 
+      if id.unpack("M")[0][0] == "\xA9"
         # strip copyright sign at the beginning
         id = id[1..-1]
+      end
+
+      if id.bytes.to_a[0] == 169 
       end
       id = id.upcase
       
