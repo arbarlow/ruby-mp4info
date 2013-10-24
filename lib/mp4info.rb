@@ -155,7 +155,7 @@ class MP4Info
         raise "Parse error"
       end
       
-      if id.unpack("M")[0][0] == "\xA9"
+      if id[0].ord == 0xa9
         # strip copyright sign at the beginning
         id = id[1..-1]
       end
