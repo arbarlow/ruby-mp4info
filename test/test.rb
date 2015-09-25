@@ -2,16 +2,16 @@
 
 # Copyright (c) 2004-2007 Jonathan Harris <jhar@cpan.org>
 # Copyright (C) 2006-2007 Jason Terk <rain@xidus.net>
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
 # published by the Free Software Foundation.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,7 +26,7 @@ require "test/unit"
 # This test case covers a small number of possible encoders and
 # tag/info fields. More cases are needed to fully test the library.
 class TestMP4Info < Test::Unit::TestCase
-  
+
   # Test an mp4 file created by the FAAC encoder
   def test_faac
     file = "faac.m4a"
@@ -61,18 +61,18 @@ class TestMP4Info < Test::Unit::TestCase
       :COPYRIGHT => nil,
       :ENCRYPTED => nil
     }
-    
+
     mp4 = MP4Info.open(file)
-    
+
     info.each do |key, value|
       assert_equal(value, mp4.send(key))
     end
   end
-  
+
   # Test an mp4 file created by the iTunes encoder
   def test_itunes
     file = "iTunes.m4a"
-    
+
     info = {
       :ALB => 'Album',
       :APID => nil,
@@ -103,18 +103,18 @@ class TestMP4Info < Test::Unit::TestCase
       :COPYRIGHT => nil,
       :ENCRYPTED => nil
     }
-    
+
     mp4 = MP4Info.open(file)
-    
+
     info.each do |key, value|
       assert_equal(value, mp4.send(key))
     end
   end
-  
+
   # Test an mp4 file created by the Nero encoder
   def test_nero
     file = "nero.mp4"
-    
+
     info = {
       :ALB => nil,
       :APID => nil,
@@ -145,14 +145,14 @@ class TestMP4Info < Test::Unit::TestCase
       :COPYRIGHT => nil,
       :ENCRYPTED => nil
     }
-    
+
     mp4 = MP4Info.open(file)
-    
+
     info.each do |key, value|
       assert_equal(value, mp4.send(key))
     end
   end
-  
+
   # Test an mp4 file created by the Real (Helix Producer) encoder
   #
   # This test will fail because MP4Info does not support Unicode
@@ -160,7 +160,7 @@ class TestMP4Info < Test::Unit::TestCase
   # (http://rubyforge.org/tracker/index.php?func=detail&aid=3512&group_id=1175&atid=4589)
   def test_real
     file = "real.m4a"
-    
+
     info = {
       :ALB	=> 'Album',
       :APID => nil,
@@ -191,11 +191,32 @@ class TestMP4Info < Test::Unit::TestCase
       :COPYRIGHT => nil,
       :ENCRYPTED => nil
     }
-    
+
     mp4 = MP4Info.open(file)
-    
+
     info.each do |key, value|
       assert_equal(value, mp4.send(key), "bad #{key}")
     end
+  end
+
+  # Test m4a file duration values.
+  # It should reject audio file with zero duration.
+  #
+  def test_zero_duration_audio
+    mp4 = MP4Info.open('zero_duration_audio_sample.m4a')
+    puts "\n----"
+    puts "[DEBUG] Inspect file info atoms #{mp4.inspect}\n"
+    puts "----\n"
+
+    duration_infos = {
+      :MM => 0,
+      :SS => 0,
+      :MS => 0
+    }
+
+    duration_infos.map do |key, value|
+      assert_equal(value, mp4.send(key))
+    end
+    assert_equal(0, mp4.send(:BITRATE))
   end
 end
